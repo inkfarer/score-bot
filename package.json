@@ -4,7 +4,8 @@
   "description": "Discord bot for keeping track of player scores",
   "main": "bot.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 0"
+    "test": "echo \"Error: no test specified\" && exit 0",
+    "start": "ts-node bot.ts"
   },
   "author": {
     "name": "inkfarer",
