@@ -23,12 +23,16 @@ const sequelize = new Sequelize('discordDB', config.dbuser, config.dbpw, {
 	dialect: 'mysql'
 });
 
-try {
-	await sequelize.authenticate();
-	console.log('DB connection successful');
-} catch (error) {
-	console.error('DB error:', error)
+async function testDB() {
+	try {
+		await sequelize.authenticate();
+		console.log('DB connection successful');
+	} catch (error) {
+		console.error('DB error:', error)
+	}
 }
+
+testDB();
 
 client.on('ready', () => {
 	console.log(`Logged in as ${client.user.tag}`);
