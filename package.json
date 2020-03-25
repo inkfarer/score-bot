@@ -1,0 +1,20 @@
+{
+  "name": "score-bot",
+  "version": "1.0.0",
+  "description": "Discord bot for keeping track of player scores",
+  "main": "bot.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 0"
+  },
+  "author": {
+    "name": "inkfarer",
+    "email": "inkfarer@gmail.com",
+    "url": "https://inkfarer.com/"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^12.0.2",
+    "ts-node": "^8.8.1",
+    "typescript": "^3.8.3"
+  }
+}
