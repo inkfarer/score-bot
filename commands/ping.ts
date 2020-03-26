@@ -1,6 +1,5 @@
 import * as Discord from 'discord.js';
 import { Command } from '../command';
-import { Sequelize, Model, DataTypes, BuildOptions, STRING, INTEGER } from 'sequelize';
 import { scores, Test } from '../database';
 const ping : Command = {
 	name: "ping",
@@ -9,14 +8,15 @@ const ping : Command = {
 		if (args.length >= 1) {
 			try {
 				const tag = await Test.create({
-					gaming: "WHOA"
+					gaming: args[0],
 				});
-				message.reply('DONE, CHECK DATABASE PGO');
+				message.reply('DONE, CHECK DATABASE');
 			} catch (e) {
-				return message.reply(e);
+				console.log(e);
+				return message.reply('database error');
 			}
 		} else {
-			message.reply('args missing');
+			message.reply('not enough arguments');
 		}
 	},
 }

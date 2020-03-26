@@ -25,6 +25,7 @@ Test.init({
 	tableName: 'tests',
 	sequelize: sequelize,
 });
+Test.sync();
 
 export const scores = sequelize.define('scores', {
 	user_id: {
@@ -33,11 +34,3 @@ export const scores = sequelize.define('scores', {
 	},
 	user_score: INTEGER,
 });
-
-/*export const test = sequelize.define('test', {
-	id: {
-		type: INTEGER,
-		autoIncrement: true,
-	},
-	gaming: STRING,
-});*/
