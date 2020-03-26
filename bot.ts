@@ -2,8 +2,9 @@ import * as Discord from 'discord.js';
 import * as fs from 'fs';
 import * as config from './config.json';
 import { Command } from './command';
+import { scores, test } from './database';
 //wtf
-import { Sequelize, Model, DataTypes, BuildOptions } from 'sequelize';
+import { Sequelize, Model, DataTypes, BuildOptions, STRING, INTEGER } from 'sequelize';
 import { HasManyGetAssociationsMixin, HasManyAddAssociationMixin, HasManyHasAssociationMixin, Association, HasManyCountAssociationsMixin, HasManyCreateAssociationMixin } from 'sequelize';
 
 const client : Discord.Client = new Discord.Client();
@@ -15,24 +16,6 @@ for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
 	commands.set(command.name, command);
 }
-
-//set up database
-
-const sequelize = new Sequelize('discordDB', config.dbuser, config.dbpw, {
-	host: config.dbhost,
-	dialect: 'mysql'
-});
-
-async function testDB() {
-	try {
-		await sequelize.authenticate();
-		console.log('DB connection successful');
-	} catch (error) {
-		console.error('DB error:', error)
-	}
-}
-
-testDB();
 
 client.on('ready', () => {
 	console.log(`Logged in as ${client.user.tag}`);
