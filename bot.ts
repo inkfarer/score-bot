@@ -25,6 +25,8 @@ client.on('message', (msg : Discord.Message) => {
 
 		if (command === 'ping') {
 			commands.get('ping').execute(msg, input);
+		} else if (command === 'read') {
+			commands.get('read').execute(msg, input);
 		}
 	}
 });
