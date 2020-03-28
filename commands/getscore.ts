@@ -10,13 +10,15 @@ const getscore : Command = {
 			message.reply(getEmbedFailure('Please mention an user.'));
 		} else {
 			const mentioned : Discord.User[] = message.mentions.users.array();
-			const msgEmbed : Discord.MessageEmbed = getEmptyEmbed();
 			const idList : Array<string> = [];
+			const msgEmbed : Discord.MessageEmbed = new Discord.MessageEmbed()
+				.setColor(colors.green)
+				.setTitle('Here you go!');
 
+			//find scores from database
 			for (let i = 0; i < mentioned.length; i++) {
 				idList.push(mentioned[i].id);
 			}
-
 			const scores : PlayerScore[] = await PlayerScore.findAll({
 				where: {
 					user_id: idList
@@ -24,9 +26,11 @@ const getscore : Command = {
 			});
 
 			for (let i = 0; i < mentioned.length; i++) {
+				//find player score by id - if it doesn't exist, assume it's 0
 				const username = mentioned[i].username;
 				const id = mentioned[i].id;
 				const scoreElem = scores.find(score => score.user_id === id);
+
 				if (scoreElem) {
 					const unit : string = scoreElem.score === 1 ? ' point' : ' points';
 					msgEmbed.addFields(
@@ -41,12 +45,6 @@ const getscore : Command = {
 			message.reply(msgEmbed);
 		}
 	},
-}
-
-function getEmptyEmbed() : Discord.MessageEmbed {
-	return new Discord.MessageEmbed()
-	.setColor(colors.green)
-	.setTitle('Here you go!')
 }
 
 module.exports = getscore;

@@ -2,7 +2,7 @@ import * as Discord from 'discord.js';
 import * as fs from 'fs';
 import * as config from './config.json';
 import { Command } from './command';
-const client : Discord.Client = new Discord.Client();
+export const client : Discord.Client = new Discord.Client();
 const commands : Discord.Collection<String, Command> = new Discord.Collection();
 const commandFiles : String[] = fs.readdirSync('./commands').filter(file => file.endsWith('.ts'));
 

@@ -1,7 +1,7 @@
 import { Sequelize, Model, DataTypes, BuildOptions, STRING, INTEGER } from 'sequelize';
 import * as config from './config.json';
 
-const sequelize = new Sequelize('discordDB', config.dbuser, config.dbpw, {
+const sequelize : Sequelize = new Sequelize('discordDB', config.dbuser, config.dbpw, {
 	host: config.dbhost,
 	dialect: 'mysql'
 });
@@ -32,6 +32,6 @@ export async function addScore(id : string, score: number) {
 			user_id: id,
 			score: score,
 		});
-		return 'success';
+		//return 'success';
 	} catch (e) { }
 };
