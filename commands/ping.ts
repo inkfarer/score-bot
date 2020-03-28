@@ -1,11 +1,11 @@
 import * as Discord from 'discord.js';
 import { Command } from '../command';
-import { scores, Test } from '../database';
+import { PlayerScore } from '../database';
 const ping : Command = {
 	name: "ping",
 	async execute(message : Discord.Message, args : String[]) {
 		message.channel.send('Pong!');
-		if (args.length >= 1) {
+		/*if (args.length >= 1) {
 			try {
 				const tag = await Test.create({
 					gaming: args[0],
@@ -17,7 +17,7 @@ const ping : Command = {
 			}
 		} else {
 			message.reply('not enough arguments');
-		}
+		}*/
 	},
 }
 module.exports = ping;

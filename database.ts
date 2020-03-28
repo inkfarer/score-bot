@@ -6,31 +6,32 @@ const sequelize = new Sequelize('discordDB', config.dbuser, config.dbpw, {
 	dialect: 'mysql'
 });
 
-export class Test extends Model {
-	public id : number;
-	public gaming: string;
-}
+export class PlayerScore extends Model {
+	//store these as strings because we aren't going math and these get fairly big
+	public user_id : string;
+	public score : number;
+};
 
-Test.init({
-	id: {
-		type: DataTypes.INTEGER.UNSIGNED,
-		autoIncrement: true,
+PlayerScore.init({
+	user_id: {
+		type: new DataTypes.STRING(255),
 		primaryKey: true,
 	},
-	gaming: {
-		type: new DataTypes.STRING(255),
-		allowNull: false,
-	}
+	score: {
+		type: DataTypes.INTEGER,
+	},
 }, {
-	tableName: 'tests',
+	tableName: 'player_scores',
 	sequelize: sequelize,
 });
-Test.sync();
+PlayerScore.sync();
 
-export const scores = sequelize.define('scores', {
-	user_id: {
-		type: STRING,
-		unique: true,
-	},
-	user_score: INTEGER,
-});
+export async function addScore(id : string, score: number) {
+	try {
+		await PlayerScore.create({
+			user_id: id,
+			score: score,
+		});
+		return 'success';
+	} catch (e) { }
+};
