@@ -35,3 +35,11 @@ export async function addScore(id : string, score: number) {
 		//return 'success';
 	} catch (e) { }
 };
+
+/*future secret code... regex for removing mentions from args
+	const regex = new RegExp('\<@![0-9]g>\g');
+		for (let i = 0; i < args.length; i++) {
+			const element = args[i];
+			
+		}
+*/

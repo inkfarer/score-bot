@@ -34,8 +34,19 @@ client.on('message', (msg : Discord.Message) => {
 			commands.get('minusone').execute(msg, input);
 		} else if (command === 'leaderboard' || command === 'lb') {
 			commands.get('leaderboard').execute(msg, input);
+		} else if (command === 'commands') {
+			commands.get('commandlist').execute(msg, input);
 		}
 	}
+});
+
+client.on('guildCreate', guild => {
+	guild.roles.create({
+		data: {
+			name: 'ScoreBot'
+		},
+		reason: 'Give this role to people with permission to edit player scores.'
+	})
 });
 
 client.login(config.token);

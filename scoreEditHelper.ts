@@ -1,50 +1,94 @@
 import * as Discord from 'discord.js';
 import { PlayerScore, addScore } from './database';
 import { colors } from './bot';
+import { Sequelize } from 'sequelize';
 
-export async function scorePlusMinus(msg : Discord.Message, action : 'subtract' | 'add') {
-	if (checkMentions(msg)) {
-		const mentioned = msg.mentions.users.array()[0];
-		const scoreElem = await PlayerScore.findOne({where: {user_id: mentioned.id}});
-		if (scoreElem) {
-			if (action === 'subtract') {
-				await scoreElem.update({score: scoreElem.score - 1});
-			} else if (action === 'add') {
-				await scoreElem.update({score: scoreElem.score + 1});
+export async function scorePlusMinus({ msg, action }: { msg: Discord.Message; action: 'subtract' | 'add'; }) {
+	if (checkMentions(msg) && checkRoles(msg)) {
+		const mentioned = msg.mentions.users.array();
+		const idList : Array<string> = [];
+		
+		for (let i = 0; i < mentioned.length; i++) {
+			idList.push(mentioned[i].id);
+		}
+		
+		var literal : string;
+		if (action === 'subtract') {
+			literal = 'score - 1';
+		} else if (action === 'add') {
+			literal = 'score + 1';
+		}
+
+		await PlayerScore.update(
+			{
+				score: Sequelize.literal(literal),
+			},
+			{
+				where: {
+					user_id: idList
+				}
 			}
-			msg.reply(getEmbedSuccess(mentioned.username, scoreElem.score));
-		} else {
-			//if player has no score assigned in database, add it
-			if (action === 'subtract') {
-				addScore(mentioned.id, -1);
-				msg.reply(getEmbedSuccess(mentioned.username, -1));
-			} else if (action === 'add') {
-				addScore(mentioned.id, 1);
-				msg.reply(getEmbedSuccess(mentioned.username, 1));
+		);
+
+		const scores : PlayerScore[] = await PlayerScore.findAll({
+			where: {
+				user_id: idList
+			}
+		});
+
+		const msgEmbed : Discord.MessageEmbed = getEmbedSuccess();
+
+		for (let i = 0; i < mentioned.length; i++) {
+			//find player score by id - if it doesn't exist, assume it's 0
+			const username = mentioned[i].username;
+			const id = mentioned[i].id;
+			const scoreElem = scores.find(score => score.user_id === id);
+
+			if (scoreElem) {
+				const unit : string = scoreElem.score === 1 ? ' point' : ' points';
+				msgEmbed.addFields(
+					{name: username, value: scoreElem.score + unit},
+				);
+			} else {
+				if (action === 'add') {
+					addScore(id, 1);
+					msgEmbed.addFields(
+						{name: username, value: '1 point'},
+					);
+				} else if (action === 'subtract') {
+					addScore(id, -1);
+					msgEmbed.addFields(
+						{name: username, value: '-1 points'},
+					);
+				}
 			}
 		}
+		msg.reply(msgEmbed);
 	}
 }
 
 function checkMentions(msg : Discord.Message) : boolean {
-	if (msg.mentions.users.size > 1) {
-		msg.reply(getEmbedFailure('Please mention only one user.'));
-		return false;
-	} else if (msg.mentions.users.size < 1) {
+	if (msg.mentions.users.size < 1) {
 		msg.reply(getEmbedFailure('Please mention an user.'));
 		return false;
 	} else return true;
 }
 
-function getEmbedSuccess(name : string, score : number) : Discord.MessageEmbed {
-	const unit : string = score === 1 ? ' point' : ' points';
+function checkRoles(msg : Discord.Message) : boolean {
+	if (msg.member.roles.cache.some(role => role.name === 'ScoreBot')) {
+		return true;
+	} else {
+		msg.reply(getEmbedFailure('You are missing the "ScoreBot" role!'));
+		return false;
+	}
+	
+}
+
+function getEmbedSuccess() : Discord.MessageEmbed {
 	return new Discord.MessageEmbed()
 		.setColor(colors.green)
 		.setTitle('Done!')
-		.setDescription('Changed Values:')
-		.addFields(
-			{name: name, value: score + unit}
-		);
+		.setDescription('Changed Values:');
 }
 
 export function getEmbedFailure(message : string) : Discord.MessageEmbed {

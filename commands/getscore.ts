@@ -9,6 +9,7 @@ const getscore : Command = {
 		if (message.mentions.users.size < 1) {
 			message.reply(getEmbedFailure('Please mention an user.'));
 		} else {
+			console.log(args);
 			const mentioned : Discord.User[] = message.mentions.users.array();
 			const idList : Array<string> = [];
 			const msgEmbed : Discord.MessageEmbed = new Discord.MessageEmbed()

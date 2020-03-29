@@ -4,7 +4,7 @@ import { scorePlusMinus } from '../scoreEditHelper';
 const minusone : Command = {
 	name: 'minusone',
 	async execute(message : Discord.Message, args : String[]) {
-		scorePlusMinus(message, 'subtract');
+		scorePlusMinus({ msg: message, action: 'subtract' });
 	},
 }
 
