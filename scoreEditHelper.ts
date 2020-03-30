@@ -2,17 +2,16 @@ import * as Discord from 'discord.js';
 import { PlayerScore, addScore } from './database';
 import { colors } from './bot';
 import { Sequelize } from 'sequelize';
+import * as config from './config.json';
 
 export async function scoreEdit({ msg, action, newValue }: { msg: Discord.Message; action: 'subtract' | 'add' | 'edit'; newValue?: number }) {
-	if (checkMentions(msg) && checkRoles(msg)) {
+	if (checkMentions(msg) && checkPermissions(msg)) {
 		const mentioned = msg.mentions.users.array();
 		const idList : Array<string> = [];
 		
 		for (let i = 0; i < mentioned.length; i++) {
 			idList.push(mentioned[i].id);
 		}
-		
-		console.log(newValue.toString());
 
 		var literal : string;
 		if (action === 'subtract') {
@@ -80,11 +79,11 @@ function checkMentions(msg : Discord.Message) : boolean {
 	} else return true;
 }
 
-function checkRoles(msg : Discord.Message) : boolean {
-	if (msg.member.roles.cache.some(role => role.name === 'ScoreBot')) {
+function checkPermissions(msg : Discord.Message) : boolean {
+	if (msg.member.roles.cache.some(role => role.name === 'ScoreBot') || config.ownerIDs.includes(msg.author.id)) {
 		return true;
 	} else {
-		msg.reply(getEmbedFailure('You are missing the "ScoreBot" role!'));
+		msg.reply(getEmbedFailure('Insufficient permissions. You are missing the "ScoreBot" role!'));
 		return false;
 	}
 	

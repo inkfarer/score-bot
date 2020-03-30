@@ -2,7 +2,7 @@
 	"important": "For the bot to function properly, create a file called config.json with the following data.",
 	"token": "Your bot account's token",
 	"prefix": "Your bot's command prefix",
-	"ownerID": "Your bot owner's user ID",
+	"ownerIDs": "IDs of bot owners or server administrators (Array)",
 	"dbhost": "Your database address (likely 'localhost')",
 	"dbuser": "Your database username", 
 	"dbpw": "Your database user's password"
