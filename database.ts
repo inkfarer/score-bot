@@ -1,9 +1,9 @@
 import { Sequelize, Model, DataTypes, BuildOptions, STRING, INTEGER } from 'sequelize';
 import * as config from './config.json';
 
-const sequelize : Sequelize = new Sequelize('discordDB', config.dbuser, config.dbpw, {
-	host: config.dbhost,
-	dialect: 'mysql'
+const sequelize : Sequelize = new Sequelize({
+	storage: "/home/yksaste/discord.db",
+	dialect: 'sqlite'
 });
 
 export class PlayerScore extends Model {
