@@ -28,14 +28,16 @@ export async function scoreEdit({ msg, action, newValue }: { msg: Discord.Messag
 			},
 			{
 				where: {
-					user_id: idList
+					user_id: idList,
+					server_id: msg.guild.id,
 				}
 			}
 		);
 
 		const scores : PlayerScore[] = await PlayerScore.findAll({
 			where: {
-				user_id: idList
+				user_id: idList,
+				server_id: msg.guild.id,
 			}
 		});
 
@@ -61,7 +63,7 @@ export async function scoreEdit({ msg, action, newValue }: { msg: Discord.Messag
 				} else if (action === 'edit') {
 					newScore = newValue;
 				}
-				addScore(id, newScore);
+				addScore(id, msg.guild.id, newScore);
 				const unit : string = newScore === 1 ? ' point' : ' points';
 				msgEmbed.addFields(
 					{name: username, value: newScore + unit},

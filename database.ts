@@ -9,12 +9,22 @@ const sequelize : Sequelize = new Sequelize('discordDB', config.dbuser, config.d
 export class PlayerScore extends Model {
 	//store these as strings because we aren't going math and these get fairly big
 	public user_id : string;
+	public server_id : string;
+	//we create a id column because both of the previous columns can come up multiple times
+	public id : number;
 	public score : number;
 };
 
 PlayerScore.init({
 	user_id: {
 		type: new DataTypes.STRING(255),
+	},
+	server_id: {
+		type: new DataTypes.STRING(255),
+	},
+	id: {
+		type: DataTypes.INTEGER.UNSIGNED,
+		autoIncrement: true,
 		primaryKey: true,
 	},
 	score: {
@@ -26,12 +36,13 @@ PlayerScore.init({
 });
 PlayerScore.sync();
 
-export async function addScore(id : string, score: number) {
+export async function addScore(id : string, IDServer : string, score: number) {
 	try {
 		await PlayerScore.create({
 			user_id: id,
+			server_id: IDServer,
 			score: score,
 		});
 		//return 'success';
-	} catch (e) { }
+	} catch (e) {console.error(e) }
 };

@@ -6,6 +6,9 @@ const leaderboard : Command = {
 	name: 'leaderboard',
 	async execute(message : Discord.Message, args : String[]) {
 		const scores : PlayerScore[] = await PlayerScore.findAll({
+			where: {
+				server_id: message.guild.id,
+			},
 			limit: 10,
 			order: [
 				['score', 'DESC']
@@ -13,6 +16,7 @@ const leaderboard : Command = {
 		});
 		const msgEmbed : Discord.MessageEmbed = new Discord.MessageEmbed()
 			.setTitle('Leaderboard')
+			.setDescription('For ' + message.guild.name)
 			.setColor(colors.yellow);
 
 		for (let i = 0; i < scores.length; i++) {

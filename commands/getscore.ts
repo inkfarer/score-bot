@@ -22,7 +22,8 @@ const getscore : Command = {
 			}
 			const scores : PlayerScore[] = await PlayerScore.findAll({
 				where: {
-					user_id: idList
+					user_id: idList,
+					server_id: message.guild.id,
 				}
 			});
 
