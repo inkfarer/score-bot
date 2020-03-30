@@ -3,7 +3,7 @@ import { PlayerScore, addScore } from './database';
 import { colors } from './bot';
 import { Sequelize } from 'sequelize';
 
-export async function scorePlusMinus({ msg, action }: { msg: Discord.Message; action: 'subtract' | 'add'; }) {
+export async function scoreEdit({ msg, action, newValue }: { msg: Discord.Message; action: 'subtract' | 'add' | 'edit'; newValue?: number }) {
 	if (checkMentions(msg) && checkRoles(msg)) {
 		const mentioned = msg.mentions.users.array();
 		const idList : Array<string> = [];
@@ -12,11 +12,15 @@ export async function scorePlusMinus({ msg, action }: { msg: Discord.Message; ac
 			idList.push(mentioned[i].id);
 		}
 		
+		console.log(newValue.toString());
+
 		var literal : string;
 		if (action === 'subtract') {
 			literal = 'score - 1';
 		} else if (action === 'add') {
 			literal = 'score + 1';
+		} else if (action === 'edit' && !isNaN(newValue)) {
+			literal = newValue.toString();
 		}
 
 		await PlayerScore.update(
@@ -50,17 +54,19 @@ export async function scorePlusMinus({ msg, action }: { msg: Discord.Message; ac
 					{name: username, value: scoreElem.score + unit},
 				);
 			} else {
+				var newScore;
 				if (action === 'add') {
-					addScore(id, 1);
-					msgEmbed.addFields(
-						{name: username, value: '1 point'},
-					);
+					newScore = 1;
 				} else if (action === 'subtract') {
-					addScore(id, -1);
-					msgEmbed.addFields(
-						{name: username, value: '-1 points'},
-					);
+					newScore = -1;
+				} else if (action === 'edit') {
+					newScore = newValue;
 				}
+				addScore(id, newScore);
+				const unit : string = newScore === 1 ? ' point' : ' points';
+				msgEmbed.addFields(
+					{name: username, value: newScore + unit},
+				);
 			}
 		}
 		msg.reply(msgEmbed);

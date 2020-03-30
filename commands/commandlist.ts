@@ -9,10 +9,11 @@ const commandlist : Command = {
 			.setTitle('List of commands')
 			.setColor(colors.green)
 			.addFields(
-				{name: prefix + 'leaderboard', value: 'Display a leaderboard with the 10 highest scoring players.'},
-				{name: prefix + 'getscore [users]', value: 'Get the score of one or more users.'},
-				{name: prefix + 'plusone [users]', value: 'Increment the score of one or more players. (Requires proper permission)'},
-				{name: prefix + 'minusone [users]', value: 'Decrement the score of one or more players. (Requires proper permission)'},
+				{name: prefix + 'leaderboard, ' + prefix + 'lb', value: 'Display a leaderboard with the 10 highest scoring players.'},
+				{name: prefix + 'getscore [players]', value: 'Get the score of one or more players.'},
+				{name: prefix + 'plusone [players]', value: 'Increment the score of one or more players. (Requires proper permission)'},
+				{name: prefix + 'minusone [players]', value: 'Decrement the score of one or more players. (Requires proper permission)'},
+				{name: prefix + 'edit [players] [new score]', value: 'Edit the score of one or more players. (Requires proper permission)'},
 				{name: prefix + 'commands', value: 'Show this list.'}
 			)
 		);

@@ -23,8 +23,8 @@ client.on('ready', () => {
 
 client.on('message', (msg : Discord.Message) => {
 	if (msg.content.startsWith(config.prefix)) {
-		const input : String[] = msg.content.slice(config.prefix.length).split(' ');
-		const command : String = input.shift();
+		const input : string[] = msg.content.slice(config.prefix.length).split(' ');
+		const command : string = input.shift();
 
 		if (command === 'getscore') {
 			commands.get('getscore').execute(msg, input);
@@ -36,6 +36,8 @@ client.on('message', (msg : Discord.Message) => {
 			commands.get('leaderboard').execute(msg, input);
 		} else if (command === 'commands') {
 			commands.get('commandlist').execute(msg, input);
+		} else if (command === 'edit') {
+			commands.get('editscore').execute(msg, input);
 		}
 	}
 });
