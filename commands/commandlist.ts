@@ -8,6 +8,7 @@ const commandlist : Command = {
 		message.reply(new Discord.MessageEmbed()
 			.setTitle('List of commands')
 			.setColor(colors.green)
+			.setFooter('Bot by inkfarer#6942 - inkfarer.com')
 			.addFields(
 				{name: prefix + 'leaderboard, ' + prefix + 'lb', value: 'Display a leaderboard with the 10 highest scoring players.'},
 				{name: prefix + 'getscore [players]', value: 'Get the score of one or more players.'},
