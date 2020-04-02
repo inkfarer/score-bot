@@ -2,6 +2,6 @@
 	"important": "For the bot to function properly, create a file called config.json with the following data.",
 	"token": "Your bot account's token",
 	"prefix": "Your bot's command prefix",
-	"ownerIDs": "IDs of bot owners or server administrators (Array)",
+	"ownerIDs": ["IDs of bot owners or server administrators (Array)"],
 	"dbfile": "Location of your SQLite database"
 }

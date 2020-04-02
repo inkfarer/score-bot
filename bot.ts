@@ -42,13 +42,4 @@ client.on('message', (msg : Discord.Message) => {
 	}
 });
 
-client.on('guildCreate', guild => {
-	guild.roles.create({
-		data: {
-			name: 'ScoreBot'
-		},
-		reason: 'Give this role to people with permission to edit player scores.'
-	})
-});
-
 client.login(config.token);

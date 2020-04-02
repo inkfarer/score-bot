@@ -5,7 +5,7 @@ import { Sequelize } from 'sequelize';
 import * as config from './config.json';
 
 export async function scoreEdit({ msg, action, newValue }: { msg: Discord.Message; action: 'subtract' | 'add' | 'edit'; newValue?: number }) {
-	if (checkMentions(msg) && checkPermissions(msg)) {
+	if (checkMentions(msg)) {
 		const mentioned = msg.mentions.users.array();
 		const idList : Array<string> = [];
 		
@@ -79,16 +79,6 @@ function checkMentions(msg : Discord.Message) : boolean {
 		msg.reply(getEmbedFailure('Please mention an user.'));
 		return false;
 	} else return true;
-}
-
-function checkPermissions(msg : Discord.Message) : boolean {
-	if (msg.member.roles.cache.some(role => role.name === 'ScoreBot') || config.ownerIDs.includes(msg.author.id)) {
-		return true;
-	} else {
-		msg.reply(getEmbedFailure('Insufficient permissions. You are missing the "ScoreBot" role!'));
-		return false;
-	}
-	
 }
 
 function getEmbedSuccess() : Discord.MessageEmbed {
