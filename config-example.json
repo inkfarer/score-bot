@@ -3,7 +3,5 @@
 	"token": "Your bot account's token",
 	"prefix": "Your bot's command prefix",
 	"ownerIDs": "IDs of bot owners or server administrators (Array)",
-	"dbhost": "Your database address (likely 'localhost')",
-	"dbuser": "Your database username", 
-	"dbpw": "Your database user's password"
+	"dbfile": "Location of your SQLite database"
 }

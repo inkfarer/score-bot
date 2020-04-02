@@ -2,7 +2,7 @@ import { Sequelize, Model, DataTypes, BuildOptions, STRING, INTEGER } from 'sequ
 import * as config from './config.json';
 
 const sequelize : Sequelize = new Sequelize({
-	storage: "/home/yksaste/discord.db",
+	storage: config.dbfile,
 	dialect: 'sqlite'
 });
 
